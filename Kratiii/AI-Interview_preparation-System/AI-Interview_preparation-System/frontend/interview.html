@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mock Interview | AI Interview Preparation System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header h1 {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #1d4ed8;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            color: #172554;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .progress-bg {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .question-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .question-number {
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .difficulty {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .question-card h3 {
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .topic {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            padding: 13px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .submit-area {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .submit-area p {
+            color: #64748b;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 24px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .error-state {
+            color: #b91c1c;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 15px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 21px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .question-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>AI Interview Preparation System</h1>
+    <p>Practice your skills and prepare for your dream job.</p>
+</header>
+
+<main class="container">
+
+    <a href="dashboard.html" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+    <section class="card">
+        <h2 id="roleTitle">Mock Interview</h2>
+
+        <p class="description">
+            Read each question carefully and write your answer in the
+            box provided. Your answers will be evaluated after submission.
+        </p>
+
+        <div class="progress-info">
+            <span id="questionCount">Loading questions...</span>
+            <span id="progressText">0% completed</span>
+        </div>
+
+        <div class="progress-bg">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </section>
+
+    <section id="questionsContainer">
+        <div class="empty-state">
+            Loading your interview questions...
+        </div>
+    </section>
+
+    <section class="submit-area" id="submitArea" hidden>
+        <p>
+            Review your answers before submitting.
+            Make sure every question has been answered.
+        </p>
+
+        <button type="button" class="submit-btn" id="submitBtn">
+            Submit Interview
+        </button>
+    </section>
+
+</main>
+
+<footer>
+    AI Interview Preparation System
+</footer>
+
+<script>
+    const API_BASE_URL = "http://localhost:8080";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const roleId = urlParams.get("roleId");
+
+    const roleTitle = document.getElementById("roleTitle");
+    const questionsContainer = document.getElementById("questionsContainer");
+    const questionCount = document.getElementById("questionCount");
+    const progressText = document.getElementById("progressText");
+    const progressFill = document.getElementById("progressFill");
+    const submitArea = document.getElementById("submitArea");
+    const submitBtn = document.getElementById("submitBtn");
+
+    let questions = [];
+
+    function showError(message) {
+        questionsContainer.innerHTML = "";
+
+        const errorBox = document.createElement("div");
+        errorBox.className = "empty-state error-state";
+        errorBox.textContent = message;
+
+        questionsContainer.appendChild(errorBox);
+        questionCount.textContent = "Questions could not be loaded";
+        progressText.textContent = "0% completed";
+        progressFill.style.width = "0%";
+        submitArea.hidden = true;
+    }
+
+    async function loadQuestions() {
+
+        if (
+            roleId === null ||
+            roleId.trim() === "" ||
+            !Number.isInteger(Number(roleId)) ||
+            Number(roleId) <= 0
+        ) {
+            roleTitle.textContent = "No valid interview role selected.";
+
+            showError(
+                "Please return to the dashboard and select an interview role."
+            );
+
+            return;
+        }
+
+        try {
+            console.log("Loading questions for role ID:", roleId);
+
+            // Load the selected role's name.
+            try {
+                const rolesResponse = await fetch(
+                    API_BASE_URL + "/api/roles"
+                );
+
+                if (rolesResponse.ok) {
+                    const roles = await rolesResponse.json();
+
+                    const selectedRole = roles.find(function(role) {
+                        return Number(role.roleId) === Number(roleId);
+                    });
+
+                    if (selectedRole) {
+                        roleTitle.textContent =
+                            selectedRole.roleName + " Interview";
+                    }
+                }
+            } catch (roleError) {
+                console.warn("Could not load role name:", roleError);
+            }
+
+            // Load interview questions.
+            const response = await fetch(
+                API_BASE_URL + "/api/questions/role/" +
+                encodeURIComponent(roleId)
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Could not load questions. Server returned " +
+                    response.status
+                );
+            }
+
+            const data = await response.json();
+
+            console.log("Questions received:", data);
+
+            if (!Array.isArray(data) || data.length === 0) {
+                showError(
+                    "No questions found for this role. Please try another role."
+                );
+                return;
+            }
+
+            questions = data;
+
+            renderQuestions();
+
+        } catch (error) {
+            console.error("Question loading error:", error);
+
+            showError(
+                "Unable to load questions. Please check that the backend " +
+                "is running and try again. Error: " + error.message
+            );
+        }
+    }
+
+    function renderQuestions() {
+        questionsContainer.innerHTML = "";
+
+        questions.forEach(function(question, index) {
+
+            const questionCard = document.createElement("article");
+            questionCard.className = "question-card";
+
+            const questionTop = document.createElement("div");
+            questionTop.className = "question-top";
+
+            const number = document.createElement("span");
+            number.className = "question-number";
+            number.textContent = "QUESTION " + (index + 1);
+
+            const difficulty = document.createElement("span");
+            difficulty.className = "difficulty";
+            difficulty.textContent = question.difficulty || "General";
+
+            questionTop.appendChild(number);
+            questionTop.appendChild(difficulty);
+
+            const questionHeading = document.createElement("h3");
+            questionHeading.textContent = question.question;
+
+            const topic = document.createElement("p");
+            topic.className = "topic";
+            topic.textContent = "Topic: " + (question.topic || "General");
+
+            const answerField = document.createElement("textarea");
+            answerField.className = "answer-field";
+            answerField.dataset.questionId = question.questionId;
+            answerField.placeholder = "Write your answer here...";
+            answerField.setAttribute(
+                "aria-label",
+                "Answer for question " + (index + 1)
+            );
+
+            answerField.addEventListener("input", updateProgress);
+
+            questionCard.appendChild(questionTop);
+            questionCard.appendChild(questionHeading);
+            questionCard.appendChild(topic);
+            questionCard.appendChild(answerField);
+
+            questionsContainer.appendChild(questionCard);
+        });
+
+        questionCount.textContent =
+            "0 of " + questions.length + " answered";
+
+        progressText.textContent = "0% completed";
+        progressFill.style.width = "0%";
+
+        submitArea.hidden = false;
+    }
+
+    function updateProgress() {
+        const answerFields =
+            document.querySelectorAll(".answer-field");
+
+        let answered = 0;
+
+        answerFields.forEach(function(field) {
+            if (field.value.trim() !== "") {
+                answered++;
+            }
+        });
+
+        const total = answerFields.length;
+
+        const percentage = total > 0
+            ? Math.round((answered / total) * 100)
+            : 0;
+
+        questionCount.textContent =
+            answered + " of " + total + " answered";
+
+        progressText.textContent = percentage + "% completed";
+        progressFill.style.width = percentage + "%";
+    }
+
+    async function submitInterview() {
+
+        const userId = localStorage.getItem("userId");
+
+        if (!userId || !Number.isInteger(Number(userId))) {
+            alert("Please log in again before submitting your interview.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        if (!questions.length) {
+            alert("No questions are available to submit.");
+            return;
+        }
+
+        const answerFields =
+            document.querySelectorAll(".answer-field");
+
+        const answers = [];
+
+        for (let i = 0; i < answerFields.length; i++) {
+
+            const answerText = answerFields[i].value.trim();
+
+            if (!answerText) {
+                alert(
+                    "Please answer question " + (i + 1) +
+                    " before submitting."
+                );
+
+                answerFields[i].focus();
+                return;
+            }
+
+            answers.push({
+                questionId: Number(answerFields[i].dataset.questionId),
+                answer: answerText
+            });
+        }
+
+        const payload = {
+            userId: Number(userId),
+            roleId: Number(roleId),
+            answers: answers
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Evaluating Answers...";
+
+        try {
+            const response = await fetch(
+                API_BASE_URL + "/api/interview/submit",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                }
+            );
+
+            const responseText = await response.text();
+
+            console.log("Submission status:", response.status);
+            console.log("Submission response:", responseText);
+
+            if (!response.ok) {
+                throw new Error(
+                    "Server returned " + response.status +
+                    ": " + responseText
+                );
+            }
+
+            // The backend currently returns:
+            // Interview Score: 75%
+            const match = responseText.match(
+                /Interview Score:\s*(\d+(?:\.\d+)?)\s*%?/i
+            );
+
+            if (match) {
+                const score = Number(match[1]);
+
+                if (Number.isFinite(score)) {
+                    window.location.href =
+                        "result.html?score=" +
+                        encodeURIComponent(score);
+
+                    return;
+                }
+            }
+
+            // Also support a JSON score response if the backend changes.
+            try {
+                const resultData = JSON.parse(responseText);
+
+                const score = Number(
+                    resultData.score ??
+                    resultData.overallScore ??
+                    resultData.interviewScore
+                );
+
+                if (
+                    Number.isFinite(score) &&
+                    score >= 0 &&
+                    score <= 100
+                ) {
+                    window.location.href =
+                        "result.html?score=" +
+                        encodeURIComponent(score);
+
+                    return;
+                }
+            } catch (parseError) {
+                // The response was plain text, not JSON.
+            }
+
+            throw new Error(
+                "The server did not return an interview score. Response: " +
+                responseText
+            );
+
+        } catch (error) {
+            console.error("Interview submission error:", error);
+
+            alert(
+                "Could not submit the interview.\n\n" +
+                error.message
+            );
+
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Interview";
+        }
+    }
+
+    submitBtn.addEventListener("click", submitInterview);
+
+    loadQuestions();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Preparation System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #263238;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        header h2 {
+            margin: 0;
+            color: #4f46e5;
+            font-size: 21px;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 7px;
+            padding: 11px 18px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: #4f46e5;
+            color: white;
+            padding: 28px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            margin: 0 0 10px;
+            font-size: 27px;
+        }
+
+        .welcome p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card, .role-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            border: 1px solid #e8eaf2;
+        }
+
+        .stat-card h3 {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .stat-card p {
+            font-size: 25px;
+            font-weight: bold;
+            color: #4f46e5;
+            margin: 0;
+        }
+
+        .section-title {
+            margin: 0 0 8px;
+            font-size: 22px;
+        }
+
+        .section-description {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .roles {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .role-card h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .role-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+            min-height: 42px;
+        }
+
+        .start-btn, .history-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .start-btn:hover, .history-btn:hover {
+            background: #3730a3;
+        }
+
+        .history {
+            text-align: center;
+            margin: 28px 0;
+        }
+
+        .message {
+            color: #b91c1c;
+            padding: 10px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            padding: 20px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            header h2 {
+                font-size: 17px;
+            }
+
+            .container {
+                margin-top: 22px;
+                padding: 0 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .roles {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>AI Interview Preparation System</h2>
+        <button class="logout" onclick="logoutUser()">Logout</button>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <h1>Welcome to Your Dashboard!</h1>
+            <p>Practice interviews, track your performance, and improve your skills.</p>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <h3>Total Interviews</h3>
+                <p id="totalInterviews">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Best Score</h3>
+                <p id="bestScore">0%</p>
+            </div>
+            <div class="stat-card">
+                <h3>Average Score</h3>
+                <p id="averageScore">0%</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Choose Your Interview Role</h2>
+            <p class="section-description">Select a role to start your mock interview.</p>
+            <div class="roles" id="rolesContainer">
+                <p>Loading interview roles...</p>
+            </div>
+            <p class="message" id="errorMessage"></p>
+        </section>
+
+        <div class="history">
+            <button class="history-btn" onclick="window.location.href='history.html'">
+                View Interview History
+            </button>
+        </div>
+    </main>
+
+    <footer>AI Interview Preparation System | Practice. Improve. Succeed.</footer>
+
+    <script>
+        async function loadRoles() {
+            const container = document.getElementById("rolesContainer");
+
+            try {
+                const response = await fetch("http://localhost:8080/api/roles");
+
+                if (!response.ok) {
+                    throw new Error("Could not load roles");
+                }
+
+                const roles = await response.json();
+                container.innerHTML = "";
+
+                roles.forEach(function(role) {
+                    const card = document.createElement("div");
+                    card.className = "role-card";
+
+                    const title = document.createElement("h3");
+                    title.textContent = role.roleName;
+
+                    const description = document.createElement("p");
+                    description.textContent =
+                        "Practice interview questions and evaluate your preparation.";
+
+                    const button = document.createElement("button");
+                    button.className = "start-btn";
+                    button.textContent = "Start Interview";
+                    console.log("Role data:", role);
+                    button.onclick = function() {
+                        window.location.href =
+                            "interview.html?roleId=" + role.roleId;
+                    };
+
+                    card.appendChild(title);
+                    card.appendChild(description);
+                    card.appendChild(button);
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                document.getElementById("errorMessage").textContent =
+                    "Unable to load roles. Please check whether the backend is running.";
+                container.innerHTML = "";
+                console.error(error);
+            }
+        }
+
+        async function loadDashboardStats() {
+            const userId = localStorage.getItem("userId");
+
+            if (!userId) {
+                document.getElementById("errorMessage").textContent =
+                    "Please log in to view your dashboard.";
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    "http://localhost:8080/api/dashboard/stats/" + userId
+                );
+
+                if (!response.ok) {
+                    throw new Error("Could not load statistics");
+                }
+
+                const stats = await response.json();
+
+                document.getElementById("totalInterviews").textContent =
+                    stats.total_interviews ?? 0;
+                document.getElementById("bestScore").textContent =
+                    (stats.best_score ?? 0) + "%";
+                document.getElementById("averageScore").textContent =
+                    (stats.average_score ?? 0) + "%";
+            } catch (error) {
+                console.error("Dashboard statistics error:", error);
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem("userId");
+            window.location.href = "index.html";
+        }
+
+        loadRoles();
+        loadDashboardStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f5ff;
+            margin: 0;
+            padding: 25px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #5146c8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th, td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #6c63ff;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f3f2ff;
+        }
+
+        .message {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        button {
+            background: #6c63ff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #5146c8;
+        }
+
+        .back {
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            th, td {
+                padding: 9px 5px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📊 Interview History</h1>
+
+    <p id="message" class="message">Loading your interview history...</p>
+
+    <table id="historyTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Result ID</th>
+                <th>Job Role</th>
+                <th>Score</th>
+                <th>Interview Date</th>
+            </tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+    </table>
+
+    <div class="back">
+        <button onclick="window.location.href='dashboard.html'">
+            Back to Dashboard
+        </button>
+    </div>
+</div>
+
+<script>
+async function loadHistory() {
+    const userId = localStorage.getItem("userId");
+    const message = document.getElementById("message");
+    const table = document.getElementById("historyTable");
+    const historyBody = document.getElementById("historyBody");
+
+    if (!userId) {
+        message.textContent = "User ID not found. Please log in again.";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "http://localhost:8080/api/interview/history/" + userId
+        );
+
+        if (!response.ok) {
+            throw new Error("Unable to load interview history.");
+        }
+
+        const history = await response.json();
+
+        if (history.length === 0) {
+            message.textContent = "No previous interviews found.";
+            return;
+        }
+
+        historyBody.innerHTML = "";
+
+        history.forEach(item => {
+            const row = document.createElement("tr");
+
+            const resultId = document.createElement("td");
+            resultId.textContent = item.result_id;
+
+            const roleName = document.createElement("td");
+            roleName.textContent = item.role_name;
+
+            const score = document.createElement("td");
+            score.textContent = item.score + "%";
+
+            const interviewDate = document.createElement("td");
+            interviewDate.textContent = item.interview_date
+                ? new Date(item.interview_date).toLocaleString()
+                : "Not available";
+
+            row.append(resultId, roleName, score, interviewDate);
+            historyBody.appendChild(row);
+        });
+
+        message.textContent = "Your previous interviews are shown below.";
+        table.style.display = "table";
+
+    } catch (error) {
+        message.textContent =
+            "Unable to load history. Please check that the backend is running.";
+        console.error(error);
+    }
+}
+
+loadHistory();
+</script>
+
+</body>
+</html>

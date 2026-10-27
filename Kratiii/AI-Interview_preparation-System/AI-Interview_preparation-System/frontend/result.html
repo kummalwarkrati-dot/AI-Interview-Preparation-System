@@ -1,0 +1,192 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Result</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        main {
+            width: 90%;
+            max-width: 650px;
+            margin: 45px auto;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #172554;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 10px solid #2563eb;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background: #eff6ff;
+        }
+
+        #score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #1d4ed8;
+        }
+
+        .score-label {
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        #performance {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0 10px;
+        }
+
+        #message {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 20px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn.secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 20px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>AI Interview Preparation System</h1>
+    <p>Your Mock Interview Result</p>
+</header>
+
+<main>
+    <h2>Interview Completed!</h2>
+    <p>Here is your interview performance.</p>
+
+    <div class="score-circle">
+        <span id="score">--%</span>
+        <span class="score-label">Your Score</span>
+    </div>
+
+    <div id="performance">Calculating result...</div>
+    <p id="message"></p>
+
+    <div class="buttons">
+        <a href="dashboard.html" class="btn">Back to Dashboard</a>
+        <a href="history.html" class="btn secondary">View History</a>
+    </div>
+</main>
+
+<footer>
+    AI Interview Preparation System
+</footer>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const rawScore = params.get("score");
+
+    const scoreElement = document.getElementById("score");
+    const performanceElement = document.getElementById("performance");
+    const messageElement = document.getElementById("message");
+
+    console.log("Result page URL:", window.location.href);
+    console.log("Score received:", rawScore);
+
+    if (rawScore === null || rawScore.trim() === "") {
+        scoreElement.textContent = "N/A";
+        performanceElement.textContent = "Score not received";
+        messageElement.textContent =
+            "The interview score was not passed to this page. Please try the interview again.";
+    } else {
+        const score = Number(rawScore);
+
+        if (!Number.isFinite(score) || score < 0 || score > 100) {
+            scoreElement.textContent = "N/A";
+            performanceElement.textContent = "Invalid score";
+            messageElement.textContent =
+                "The received score is invalid. Please submit the interview again.";
+        } else {
+            scoreElement.textContent = score + "%";
+
+            if (score >= 80) {
+                performanceElement.textContent = "Excellent Performance!";
+                messageElement.textContent =
+                    "Great job! You demonstrated a strong understanding of the evaluated keywords.";
+            } else if (score >= 60) {
+                performanceElement.textContent = "Good Performance!";
+                messageElement.textContent =
+                    "Good effort! Keep practising to improve your interview skills.";
+            } else if (score >= 40) {
+                performanceElement.textContent = "Keep Improving!";
+                messageElement.textContent =
+                    "Review the concepts and practise explaining your answers more clearly.";
+            } else {
+                performanceElement.textContent = "More Practice Needed";
+                messageElement.textContent =
+                    "Keep learning and practising. Every interview is an opportunity to improve.";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
+```

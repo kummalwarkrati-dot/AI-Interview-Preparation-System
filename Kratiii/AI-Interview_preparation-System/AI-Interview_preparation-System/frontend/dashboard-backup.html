@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | AI Interview Preparation System</title>
+<link rel="stylesheet" href="style.css">
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: #f5f5ff;
+        color: #24243b;
+        font-family: Arial, sans-serif;
+    }
+    .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 18px 7%;
+        background: #ffffff;
+        box-shadow: 0 3px 15px rgba(35, 30, 80, 0.08);
+    }
+    .brand {
+        color: #6254d9;
+        font-size: 21px;
+        font-weight: bold;
+    }
+    .logout-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #fff0f0;
+        color: #d63b4b;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .logout-btn:hover {
+        background: #ffe0e0;
+    }
+    .main-content {
+        width: 90%;
+        max-width: 1150px;
+        margin: 35px auto;
+    }
+    .welcome-section {
+        padding: 30px;
+        border-radius: 18px;
+        color: white;
+        background: linear-gradient(120deg, #6558df, #8d68e8);
+        box-shadow: 0 8px 25px rgba(101, 88, 223, 0.18);
+    }
+    .welcome-section h1 {
+        margin: 0 0 12px;
+        font-size: 30px;
+    }
+    .welcome-section p {
+        margin: 0;
+        line-height: 1.7;
+        color: #f0edff;
+    }
+    .section-title {
+        margin: 35px 0 8px;
+        font-size: 23px;
+    }
+    .section-description {
+        margin: 0 0 20px;
+        color: #73738a;
+        line-height: 1.6;
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+        margin-top: 22px;
+    }
+    .stat-card {
+        padding: 23px;
+        background: white;
+        border: 1px solid #eae8ff;
+        border-radius: 15px;
+        box-shadow: 0 5px 18px rgba(35, 30, 80, 0.05);
+    }
+    .stat-label {
+        margin: 0;
+        color: #77768d;
+        font-size: 14px;
+    }
+    .stat-value {
+        margin: 14px 0 0;
+        color: #6254d9;
+        font-size: 32px;
+    }
+    .roles-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        margin-top: 22px;
+    }
+    .role-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 25px;
+        background: #ffffff;
+        border: 1px solid #e9e7fa;
+        border-radius: 15px;
+        box-shadow: 0 5px 18px rgba(35, 30, 80, 0.05);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .role-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(77, 65, 160, 0.12);
+    }
+    .role-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 16px;
+        border-radius: 12px;
+        background: #efedff;
+        font-size: 24px;
+    }
+    .role-card h3 {
+        margin: 0 0 10px;
+        font-size: 19px;
+    }
+    .role-card p {
+        flex-grow: 1;
+        margin: 0 0 20px;
+        color: #77768d;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .start-btn {
+        width: 100%;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 8px;
+        background: #6858dc;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .start-btn:hover {
+        background: #5142c2;
+    }
+    .role-message {
+        grid-column: 1 / -1;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        color: #77768d;
+    }
+    .bottom-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin: 35px 0;
+    }
+    .history-btn {
+        padding: 13px 24px;
+        border: none;
+        border-radius: 9px;
+        background: #eae7ff;
+        color: #5142c2;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .history-btn:hover {
+        background: #dcd6ff;
+    }
+    .footer {
+        padding: 22px;
+        text-align: center;
+        color: #85849a;
+        font-size: 13px;
+    }
+    @media (max-width: 650px) {
+        .topbar {
+            padding: 16px 5%;
+        }
+        .brand {
+            max-width: 220px;
+            font-size: 17px;
+            line-height: 1.4;
+        }
+        .main-content {
+            width: 92%;
+            margin: 22px auto;
+        }
+        .welcome-section {
+            padding: 24px;
+        }
+        .welcome-section h1 {
+            font-size: 25px;
+        }
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 13px;
+        }
+        .stat-card {
+            padding: 20px;
+        }
+        .stat-value {
+            font-size: 28px;
+        }
+        .roles-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">AI Interview Preparation System</div>
+    <button class="logout-btn" onclick="logoutUser()">
+        Logout ↗
+    </button>
+</header>
+<main class="main-content">
+    <section class="welcome-section">
+        <h1>Welcome Back! 👋</h1>
+        <p>
+            Practice your technical skills, evaluate your performance,
+            and prepare confidently for your next interview.
+        </p>
+    </section>
+    <section>
+        <h2 class="section-title">Your Performance</h2>
+        <p class="section-description">
+            Track your interview progress and monitor your scores.
+        </p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Total Interviews</p>
+                <h2 class="stat-value" id="totalInterviews">Loading...</h2>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Best Score</p>
+                <h2 class="stat-value" id="bestScore">Loading...</h2>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Average Score</p>
+                <h2 class="stat-value" id="averageScore">Loading...</h2>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2 class="section-title">Choose Your Interview Role</h2>
+        <p class="section-description">
+            Select your preferred career role to start a mock interview.
+        </p>
+        <div class="roles-grid" id="rolesContainer">
+            <p class="role-message">Loading interview roles...</p>
+        </div>
+    </section>
+    <div class="bottom-actions">
+        <button class="history-btn"
+                onclick="window.location.href='history.html'">
+            📊 View Interview History
+        </button>
+    </div>
+</main>
+<footer class="footer">
+    AI Interview Preparation System · Practice. Improve. Succeed.
+</footer>
+<script>
+    async function loadRoles() {
+        const rolesContainer = document.getElementById("rolesContainer");
+        const roleDetails = {
+            "Java Developer": {
+                icon: "☕",
+                description: "Practice Java programming and object-oriented concepts."
+            },
+            "Python Developer": {
+                icon: "🐍",
+                description: "Improve your Python fundamentals and coding knowledge."
+            },
+            "Data Scientist": {
+                icon: "📊",
+                description: "Explore statistics, data analysis, and machine learning."
+            },
+            "AI / ML Engineer": {
+                icon: "🤖",
+                description: "Prepare for AI, machine learning, and model-related questions."
+            }
+        };
+        try {
+            const response = await fetch("http://localhost:8080/api/roles");
+            if (!response.ok) {
+                throw new Error("Failed to load roles");
+            }
+            const roles = await response.json();
+            rolesContainer.innerHTML = "";
+            roles.forEach(function(role) {
+                const details = roleDetails[role.roleName] || {
+                    icon: "💻",
+                    description: "Practice technical questions for this career role."
+                };
+                const card = document.createElement("div");
+                card.className = "role-card";
+                const icon = document.createElement("div");
+                icon.className = "role-icon";
+                icon.textContent = details.icon;
+                const title = document.createElement("h3");
+                title.textContent = role.roleName;
+                const description = document.createElement("p");
+                description.textContent = details.description;
+                const button = document.createElement("button");
+                button.className = "start-btn";
+                button.textContent = "Start Interview →";
+                button.onclick = function() {
+                    window.location.href =
+                        "interview.html?roleId=" + role.roleId;
+                };
+                card.append(icon, title, description, button);
+                rolesContainer.appendChild(card);
+            });
+            if (roles.length === 0) {
+                rolesContainer.innerHTML =
+                    '<p class="role-message">No interview roles available yet.</p>';
+            }
+        } catch (error) {
+            rolesContainer.innerHTML =
+                '<p class="role-message">Unable to load interview roles. Please check that the backend is running.</p>';
+            console.error(error);
+        }
+    }
+    async function loadDashboardStats() {
+        const userId = localStorage.getItem("userId");
+        const total = document.getElementById("totalInterviews");
+        const best = document.getElementById("bestScore");
+        const average = document.getElementById("averageScore");
+        if (!userId) {
+            total.textContent = "Login required";
+            best.textContent = "--";
+            average.textContent = "--";
+            return;
+        }
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/dashboard/stats/" + userId
+            );
+            if (!response.ok) {
+                throw new Error("Unable to load statistics");
+            }
+            const stats = await response.json();
+            total.textContent = stats.total_interviews;
+            best.textContent = stats.best_score + "%";
+            average.textContent = stats.average_score + "%";
+        } catch (error) {
+            total.textContent = "--";
+            best.textContent = "--";
+            average.textContent = "--";
+            console.error(error);
+        }
+    }
+    function logoutUser() {
+        localStorage.removeItem("userId");
+        window.location.href = "index.html";
+    }
+    loadRoles();
+    loadDashboardStats();
+</script>
+</body>
+</html>
